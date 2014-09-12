@@ -1,0 +1,18 @@
+.container {
+  border: solid 1px green;
+  padding: 1%;
+  margin: 0 10%;
+}
+
+.grey_box {
+  // background-color: #666;
+  margin-bottom: 10px;
+}
+
+.form {
+  // border: solid 1px red;
+}
+
+.list {
+  //border: solid 1px blue;
+}
