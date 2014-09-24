@@ -14,6 +14,13 @@
   margin-bottom: 10px;
 }
 
+ul {
+	list-style: none;
+}
+
+li input {
+	margin: 0 15px 0 0;
+}
 
 .deleteListItem {
   margin: 0 0 0 10px;
@@ -21,4 +28,9 @@
   top: 3px;            /* naturally appear */
   border-radius: 3px;
   border: 1px solid gray;
+}
+
+.completed {
+	text-decoration: line-through;
+	color: gray;
 }
