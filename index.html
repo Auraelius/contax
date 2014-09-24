@@ -1,46 +1,31 @@
-<html>
-  <head>
-    <title>Contax!</title>
-    <link rel="stylesheet" href="css/main.css">
-  </head>
-  <body>
-    <h1>Contax!</h1>
-    <div class="container">
-      <div class="form grey_box">
-    <form action="#">
+<h1>Contax!</h1>
+<p id="tagline"> (Add and remove list items using functions)</h2>
+<div class="container">
+  <div class="form grey_box">
+    <form id="the_form" action="#">
       <div>
-        <label for="name">Name:</label>
-        <input type="text" name="name" id="name" placeholder="firt last" />
+        <label for="first_name">Name:</label>
+        <input type="text" name="first_name" id="first_name" placeholder="first" />
+        <input type="text" name="last_name" id="last_name" placeholder="last" />
       </div>
-      
+
       <div>
         <label for="phone">Phone:</label>
         <input type="text" name="phone" id="phone" placeholder="xxx-xxx-xxxx" />
       </div>
-      
+
       <div>
         <label for="email">Email:</label>
         <input type="text" name="email" id="email" placeholder="you@email.com" />
       </div>
-      
+
       <div>
-        <input type="submit" value="Submit" />
+        <button id="submitButton" type="button">Add to list</button>
       </div>
     </form>  
-      </div>
+  </div>
 
-      <div class="list grey_box">
-          <p>list</p>
-      <ul>
-        <li>jane smith, xxx-xxx-xxxx, you@email.com</li>
-        <li>jane smith, xxx-xxx-xxxx, you@email.com</li>
-        <li>jane smith, xxx-xxx-xxxx, you@email.com</li>
-      </ul>  
-      </div>
-    </div>
-
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="js/main.js"></script>
-  </body>
-
-</html>
+  <div class="list grey_box">
+    <ul id="contactList"></ul>  
+  </div>
+</div>

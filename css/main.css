@@ -1,3 +1,8 @@
+#tagline {
+  margin-top: -30px;
+  font-size: 1.5em;
+  font-style: italic;
+}
 .container {
   border: solid 1px green;
   padding: 1%;
@@ -5,14 +10,15 @@
 }
 
 .grey_box {
-  // background-color: #666;
+  // background-color: #ccc;
   margin-bottom: 10px;
 }
 
-.form {
-  // border: solid 1px red;
-}
 
-.list {
-  //border: solid 1px blue;
+.deleteListItem {
+  margin: 0 0 0 10px;
+  position: relative;  /* move it down slightly from where it would */
+  top: 3px;            /* naturally appear */
+  border-radius: 3px;
+  border: 1px solid gray;
 }
