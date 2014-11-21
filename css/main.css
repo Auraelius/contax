@@ -30,7 +30,7 @@ li input {
   border: 1px solid gray;
 }
 
-.completed {
+.checked {
 	text-decoration: line-through;
 	color: gray;
 }

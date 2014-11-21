@@ -7,11 +7,15 @@ and grey when checked and back to normal when cleared.
 */ 
 function toggleCompletion() {
   if (this.checked == true) {
-    this.nextSibling.className = "completed";
+    this.nextSibling.className = "checked";
   } 
   else {
     this.nextSibling.className = "";
   }
+
+  // When this is talking to server-side storage, it will have to do a PUT ajax call to 
+  // update the status of the item in the database. It may not need to modify the list, 
+  // depending on how the callback to the 
 }
 
 /* This function reads the form and returns an object with the form values */
@@ -21,18 +25,36 @@ function getFormValues(){
   var ln = form.elements.last_name.value;
   var p = form.elements.phone.value;
   var e = form.elements.email.value;
-  return {first_name: fn, last_name: ln, phone: p, email: e}; 
+  // the form does not allow setting the "checked" property, but it must be
+  // assigned a value, so we give it a value of false.
+  return {first_name: fn, last_name: ln, phone: p, email: e, checked: false}; 
+
+  // When this is talking to server-side storage, it will have to do a POST ajax call to 
+  // create a new item in the database.
+
 }
 
 /* This function adds a new list item to the list using the given parameters */
 function addListItem( formValues){
 
+  /* NOTE: this routine does not use jQuery. It is "legacy" code. It's been modified to add the
+   * "checked" property, but otherwise left using basic DOM manipulation.
+   * 
+   * We leave the translation of this code to jQuery as an exercise for the interested student.
+   * 
+   * Note that, because the function was well-encapsulated, it did not have to be 
+   * rewritten as the code changed around it, as long as we preserved its interface.
+   */
+
   /* make the list item element */
   var item = document.createElement("li");
 
-  /* put a checkbox at the start of the list item and make it clickable */
+  /* put a checkbox at the start of the list item, check it if the item is checked, and make it clickable */
   var checkbox = document.createElement("input");
   checkbox.setAttribute("type", "checkbox");
+  if (formValues.checked) {
+    checkbox.setAttribute("checked", "true");
+  }
   checkbox.addEventListener("click", toggleCompletion);
   item.appendChild(checkbox)
 
@@ -54,6 +76,10 @@ function addListItem( formValues){
   deleteButtonImage.addEventListener("click", removeListItem);
   item.appendChild(deleteButtonImage);
 
+   if (formValues.checked) {
+    item.setAttribute("class", "checked");
+  }
+
   /* attach the list item to the list */
   var list = document.getElementById("contactList");
   list.appendChild(item);
@@ -68,43 +94,58 @@ function addListItemFromForm() {
 function removeListItem() {
   var listItem = this.parentNode;
   listItem.parentNode.removeChild(listItem);
+
+  // When this is talking to server-side storage, it will have to do a DELETE ajax call to 
+  // remove the item from the database.
 }
 
-/* this function sets up things to catch clicks on the form submit button */
-function setUpForm(){
-  var button = document.getElementById("submitButton");
-  button.addEventListener("click", addListItemFromForm); 
-}
-
-/* this function sets up things to catch clicks on ALL the current delete buttons */
-function attachDeleteButtonListeners() {
-  /* Find all the delete buttons (which are images) */
-  var closeButtonElements = document.getElementsByClassName("deleteListItem");
-
-  /* For each one, add an event listener */
-  if (closeButtonElements.length > 0) {
-    for (var i = 0; i<closeButtonElements.length; i++) {
-      closeButtonElements[i].addEventListener("click", removeListItem);
-    }  
-  }
-  else { /* handle errors */
-    console.log("No delete buttons found.");
-  }
-}
 
 /* this function adds a bunch of dummy values to the list */
 function makeStartingList(){
-  for(var i = 0; i<3; i++){
-    addListItem( {first_name: "Samantha", 
-                  last_name: "Smith",
-                  phone: "123-456-7890", 
-                  email: "sam@smith.com"});
-  }
+
+  // When this is talking to server-side storage, it will have to do a GET ajax call to 
+  // get the items from the server instead of making them up right here.
+
+  defaultListValues = [
+    {
+      first_name: "Samantha", 
+      last_name: "Smith",
+      phone: "123-456-7890", 
+      email: "sam@smith.com",
+      checked: false
+    },
+    {
+      first_name: "Jimmy", 
+      last_name: "Jones",
+      phone: "123-456-7890", 
+      email: "jim@jones.com",
+      checked: false
+    },
+        {
+      first_name: "Francis", 
+      last_name: "Farmer",
+      phone: "123-456-7890", 
+      email: "fran@farmer.com",
+      checked: false
+    },
+        {
+      first_name: "Zed", 
+      last_name: "Zero",
+      phone: "123-456-7890", 
+      email: "zeds@dead.com",
+      checked: true
+    }
+  ];
+
+  // use an iterator method to do the same thing to every item in the list
+  defaultListValues.forEach(addListItem); // only works in IE 9+
+
+
 }
 
 /* FINALLY, let's run the functions we've defined to get the page ready for the user */
-setUpForm();
+$("#submitButton").click(addListItemFromForm); 
 makeStartingList();
-attachDeleteButtonListeners();
+$("deleteListItem").click(removeListItem);
 
 
