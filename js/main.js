@@ -1,9 +1,17 @@
 /* Define the functions we'll use */
 
-/* this function is called when the checkbox in a list item is clicked */
-/* it is supposed to change the text of the list item to strikethrough and grey */ 
-function completeItem() {
-  this.nextSibling.className = "completed";
+/* 
+this function is called when the checkbox in a list item is clicked 
+it is supposed to change the text of the list item to strikethrough 
+and grey when checked and back to normal when cleared.
+*/ 
+function toggleCompletion() {
+  if (this.checked == true) {
+    this.nextSibling.className = "completed";
+  } 
+  else {
+    this.nextSibling.className = "";
+  }
 }
 
 /* This function reads the form and returns an object with the form values */
@@ -17,23 +25,20 @@ function getFormValues(){
 }
 
 /* This function adds a new list item to the list using the given parameters */
-
-/* Why do we separate this function from the one above? Where else do these values come from? */
-
 function addListItem( formValues){
 
   /* make the list item element */
   var item = document.createElement("li");
 
-  /* put a checkbox at the start of the list item and make it clickable*/
+  /* put a checkbox at the start of the list item and make it clickable */
   var checkbox = document.createElement("input");
   checkbox.setAttribute("type", "checkbox");
-  checkbox.addEventListener("click", completeItem);
+  checkbox.addEventListener("click", toggleCompletion);
   item.appendChild(checkbox)
 
-  /* add the text from the parameter and make it stylable using a span element */
+  /* add the text from the parameter to the list item and make it stylable using a span element */
   var the_span = document.createElement("span");
-  /* make the text node and attach it to the list element */
+  /* make the text node and attach it to the span element */
   var node = document.createTextNode( formValues.first_name + " "
                                      + formValues.last_name + ", "
                                      + formValues.phone + ", " 
@@ -46,9 +51,7 @@ function addListItem( formValues){
   deleteButtonImage.setAttribute("src", "https://s3-us-west-2.amazonaws.com/s.cdpn.io/53676/1411117915_cross-24-16.png");
   deleteButtonImage.setAttribute("alt", "[X]");
   deleteButtonImage.setAttribute("class", "deleteListItem");
-  /* make it clickable */
   deleteButtonImage.addEventListener("click", removeListItem);
-  /* attach the button to the list item */
   item.appendChild(deleteButtonImage);
 
   /* attach the list item to the list */
