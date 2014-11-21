@@ -46,13 +46,17 @@ function addListItem( formValues){
    * rewritten as the code changed around it, as long as we preserved its interface.
    */
 
+   // JSON has booleans as strings, our form creates booleans
+   // this expression converts strings to booleans
+   var isChecked = (formValues.checked === 'true' || formValues.checked === true ); 
+
   /* make the list item element */
   var item = document.createElement("li");
 
   /* put a checkbox at the start of the list item, check it if the item is checked, and make it clickable */
   var checkbox = document.createElement("input");
   checkbox.setAttribute("type", "checkbox");
-  if (formValues.checked) {
+  if (isChecked) {
     checkbox.setAttribute("checked", "true");
   }
   checkbox.addEventListener("click", toggleCompletion);
@@ -66,6 +70,11 @@ function addListItem( formValues){
                                      + formValues.phone + ", " 
                                      + formValues.email);
   the_span.appendChild(node);
+
+  // if the contact is checked, we have to style it appropriately
+  if (isChecked) {
+    the_span.setAttribute("class", "checked");
+  }
   item.appendChild(the_span);
 
   /* make the image for the delete button and attach it to the list item element */
@@ -76,9 +85,7 @@ function addListItem( formValues){
   deleteButtonImage.addEventListener("click", removeListItem);
   item.appendChild(deleteButtonImage);
 
-   if (formValues.checked) {
-    item.setAttribute("class", "checked");
-  }
+
 
   /* attach the list item to the list */
   var list = document.getElementById("contactList");
@@ -99,48 +106,13 @@ function removeListItem() {
   // remove the item from the database.
 }
 
-
 /* this function adds a bunch of dummy values to the list */
 function makeStartingList(){
-
-  // When this is talking to server-side storage, it will have to do a GET ajax call to 
-  // get the items from the server instead of making them up right here.
-
-  defaultListValues = [
-    {
-      first_name: "Samantha", 
-      last_name: "Smith",
-      phone: "123-456-7890", 
-      email: "sam@smith.com",
-      checked: false
-    },
-    {
-      first_name: "Jimmy", 
-      last_name: "Jones",
-      phone: "123-456-7890", 
-      email: "jim@jones.com",
-      checked: false
-    },
-        {
-      first_name: "Francis", 
-      last_name: "Farmer",
-      phone: "123-456-7890", 
-      email: "fran@farmer.com",
-      checked: false
-    },
-        {
-      first_name: "Zed", 
-      last_name: "Zero",
-      phone: "123-456-7890", 
-      email: "zeds@dead.com",
-      checked: true
-    }
-  ];
-
-  // use an iterator method to do the same thing to every item in the list
-  defaultListValues.forEach(addListItem); // only works in IE 9+
-
-
+  $.getJSON('db/defaultList.json', function (data) {  
+    $.each(data,function (index, contact) {
+      addListItem(contact);
+    });
+  });
 }
 
 /* FINALLY, let's run the functions we've defined to get the page ready for the user */
