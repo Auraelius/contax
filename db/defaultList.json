@@ -1,0 +1,30 @@
+[
+    {
+      "first_name": "Samantha", 
+     "last_name": "Smith",
+      "phone": "123-456-7890", 
+      "email": "sam@smith.com",
+      "checked": "false"
+    },
+    {
+      "first_name": "Jimmy", 
+      "last_name": "Jones",
+      "phone": "123-456-7890", 
+      "email": "jim@jones.com",
+      "checked": "false"
+    },
+        {
+      "first_name": "Francis", 
+      "last_name": "Farmer",
+      "phone": "123-456-7890", 
+      "email": "fran@farmer.com",
+      "checked": "false"
+    },
+        {
+      "first_name": "Zed", 
+      "last_name": "Zero",
+      "phone": "123-456-7890", 
+      "email": "zeds@dead.com",
+      "checked": "true"
+    }
+  ]
