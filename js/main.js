@@ -94,6 +94,8 @@ function addListItem( formValues){
 
 /* This function uses two other functions to 1) get the values from the form, and 2) put them in the list */
 function addListItemFromForm() {
+  var newItem = getFormValues();
+
   addListItem( getFormValues());
 }
 
@@ -109,15 +111,25 @@ function removeListItem() {
 /* this function adds a bunch of dummy values to the list */
 function makeStartingList(){
   $.getJSON('db/defaultList.json', function (data) {  
-    $.each(data,function (index, contact) {
+    var theListJson = JSON.stringify(data);
+    localStorage.setItem('theList', theListJson); // save the initial list to locale storage
+    displayList();
+  });
+}
+
+function displayList(){
+  /*
+   * Get the list out of local storage and create the HTML to display it, one list item at a time.
+  */
+   var theListJson = localStorage.getItem('theList'); // get it out of local storage
+    var theList = JSON.parse(theListJson);            // convert it to JSON
+    $.each(theList,function (index, contact) {        // Construct the DOM <ul> from the list
       addListItem(contact);
     });
-  });
+
 }
 
 /* FINALLY, let's run the functions we've defined to get the page ready for the user */
 $("#submitButton").click(addListItemFromForm); 
 makeStartingList();
-$("deleteListItem").click(removeListItem);
-
 
