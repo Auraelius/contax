@@ -94,9 +94,17 @@ function addListItem( formValues){
 
 /* This function uses two other functions to 1) get the values from the form, and 2) put them in the list */
 function addListItemFromForm() {
-  var newItem = getFormValues();
+  var newItem = getFormValues();  // get the form values and store them as an object  
 
-  addListItem( getFormValues());
+  var theListJson = localStorage.getItem('theList'); // get the old list  out of local storage
+  var theList = JSON.parse(theListJson);            // convert it from JSON
+
+  theList.push(newItem);                              // save the new item to the list
+  theListJson = JSON.stringify(theList);
+  localStorage.setItem('theList', theListJson);       // and put it back in storage
+
+  displayList();                                    // display the stored list
+  // addListItem( getFormValues());
 }
 
 /* This function will be called when the delete button image in the list item is clicked. */
@@ -110,19 +118,27 @@ function removeListItem() {
 
 /* this function adds a bunch of dummy values to the list */
 function makeStartingList(){
-  $.getJSON('db/defaultList.json', function (data) {  
-    var theListJson = JSON.stringify(data);
-    localStorage.setItem('theList', theListJson); // save the initial list to locale storage
-    displayList();
-  });
+  if (localStorage.getItem('theList') === null) {  // if the list does not exist
+    $.getJSON('db/defaultList.json', function (data) {  // get the list from the file
+      var theListJson = JSON.stringify(data);
+      localStorage.setItem('theList', theListJson); // save the initial list to local storage
+      displayList(); // display it when it's ready
+                      // remember, this is asynchronous
+    });
+  }  else {
+    displayList(); // display what already exists.
+  }
+  
 }
 
 function displayList(){
   /*
    * Get the list out of local storage and create the HTML to display it, one list item at a time.
+   * Clear any existing DOM list elements to make sure we only display what's in local storage
   */
    var theListJson = localStorage.getItem('theList'); // get it out of local storage
     var theList = JSON.parse(theListJson);            // convert it to JSON
+    document.getElementById("contactList").innerHTML = ""; // clear the DOM <ul>
     $.each(theList,function (index, contact) {        // Construct the DOM <ul> from the list
       addListItem(contact);
     });
