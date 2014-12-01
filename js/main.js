@@ -107,25 +107,47 @@ function addListItemFromForm() {
   // addListItem( getFormValues());
 }
 
-/* This function will be called when the delete button image in the list item is clicked. */
+
 function removeListItem() {
-  var listItem = this.parentNode;
-  listItem.parentNode.removeChild(listItem);
+  /* This function will be called when the delete button image in the list item is clicked. */
+
+  var listItem = this.parentNode;                 // get the DOM <li> element
+  var firstName=listItem.innerText.split(" ")[0]; // Get the first word of the li element's string
+                                                  // and assume it's the first name
+
+  // get the old list out of local storage, converting it from JSON
+  var theList = JSON.parse(localStorage.getItem('theList'));  
+
+  // create a new array with every object EXCEPT the one that matches the clicked-on list item
+  var newList = theList.filter(function (contact) {
+                        return contact.first_name !== firstName;
+                       });
+  
+  localStorage.setItem('theList', JSON.stringify(newList));     // save new list
+  displayList();                                                // and display it
+
+  // THERE'S A BUG IN THIS METHOD
+  //
+  // can you find it?
 
   // When this is talking to server-side storage, it will have to do a DELETE ajax call to 
   // remove the item from the database.
 }
 
-/* this function adds a bunch of dummy values to the list */
+
 function makeStartingList(){
-  if (localStorage.getItem('theList') === null) {  // if the list does not exist
+  /*  this function creates an initial list with a bunch of dummy values 
+  *   it uses a json data structure in a file
+  *   if there's already a list in local storage, it just loads that instead.
+  */
+  if (localStorage.getItem('theList') === null) {       // if the local stored copy does not exist
     $.getJSON('db/defaultList.json', function (data) {  // get the list from the file
       var theListJson = JSON.stringify(data);
-      localStorage.setItem('theList', theListJson); // save the initial list to local storage
-      displayList(); // display it when it's ready
-                      // remember, this is asynchronous
+      localStorage.setItem('theList', theListJson);     // save the initial list to local storage
+      displayList();                                    // display it when it's ready
+                                                        // remember, this is asynchronous
     });
-  }  else {
+  }  else { // the list is already stored from the last time we were on this page
     displayList(); // display what already exists.
   }
   
