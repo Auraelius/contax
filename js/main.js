@@ -1,11 +1,12 @@
 /* Define the functions we'll use */
 
-/* 
-this function is called when the checkbox in a list item is clicked 
-it is supposed to change the text of the list item to strikethrough 
-and grey when checked and back to normal when cleared.
-*/ 
 function toggleCompletion() {
+  /* 
+  this function is called when the checkbox in a list item is clicked 
+  it is supposed to change the text of the list item to strikethrough 
+  and grey when checked and back to normal when cleared.
+  */ 
+
   if (this.checked == true) {
     this.nextSibling.className = "checked";
   } 
@@ -13,13 +14,27 @@ function toggleCompletion() {
     this.nextSibling.className = "";
   }
 
+  /* TODO - make checked status persistant
+   *
+   * this routine needs to be modified in the following way:
+   * instead of changing the DOM - the appearance of the list item,
+   * we need to change the underlying data - the "checked" status -
+   * and then call an existing routine to just display the data
+   *
+   * We need to find the item in the stored array, update its status,
+   * store the array again, and then display the array.
+   *
+   * Wouldn't this be easier if each item in the list had it's own, unique key?
+   */
+
   // When this is talking to server-side storage, it will have to do a PUT ajax call to 
   // update the status of the item in the database. It may not need to modify the list, 
   // depending on how the callback to the 
 }
 
-/* This function reads the form and returns an object with the form values */
 function getFormValues(){
+  /* This function reads the form and returns an object with the form values */
+
   var form = document.getElementById ("the_form");
   var fn = form.elements.first_name.value;
   var ln = form.elements.last_name.value;
@@ -31,11 +46,10 @@ function getFormValues(){
 
   // When this is talking to server-side storage, it will have to do a POST ajax call to 
   // create a new item in the database.
-
 }
 
-/* This function adds a new list item to the list using the given parameters */
 function addListItem( formValues){
+  /* This function adds a new list item to the list using the given parameters */
 
   /* NOTE: this routine does not use jQuery. It is "legacy" code. It's been modified to add the
    * "checked" property, but otherwise left using basic DOM manipulation.
@@ -92,8 +106,9 @@ function addListItem( formValues){
   list.appendChild(item);
 }
 
-/* This function uses two other functions to 1) get the values from the form, and 2) put them in the list */
-function addListItemFromForm() {
+function addListItemFromForm(){
+  /* get the values from the form and put them in the list, then display the list */
+
   var newItem = getFormValues();  // get the form values and store them as an object  
 
   var theListJson = localStorage.getItem('theList'); // get the old list  out of local storage
@@ -107,8 +122,7 @@ function addListItemFromForm() {
   // addListItem( getFormValues());
 }
 
-
-function removeListItem() {
+function removeListItem(){
   /* This function will be called when the delete button image in the list item is clicked. */
 
   var listItem = this.parentNode;                 // get the DOM <li> element
@@ -134,7 +148,6 @@ function removeListItem() {
   // remove the item from the database.
 }
 
-
 function makeStartingList(){
   /*  this function creates an initial list with a bunch of dummy values 
   *   it uses a json data structure in a file
@@ -150,7 +163,6 @@ function makeStartingList(){
   }  else { // the list is already stored from the last time we were on this page
     displayList(); // display what already exists.
   }
-  
 }
 
 function displayList(){
@@ -164,7 +176,6 @@ function displayList(){
     $.each(theList,function (index, contact) {        // Construct the DOM <ul> from the list
       addListItem(contact);
     });
-
 }
 
 /* FINALLY, let's run the functions we've defined to get the page ready for the user */
